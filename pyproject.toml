@@ -23,7 +23,7 @@
 
 [project]
 name = "forktex-grid"
-version = "1.0.0"
+version = "1.0.1"
 description = "Tables, columns and rows declared at runtime, stored in PostgreSQL, on the forktex substrate."
 authors = [
     {name = "FORKTEX",email = "info@forktex.com"}

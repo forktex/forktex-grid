@@ -5,6 +5,12 @@ the schema and query documents, the agent tool names and the `forktex_grid` data
 
 ## [Unreleased]
 
+## [1.0.1] — 2026-11-18
+
+No module changed; the package's code is the same as 1.0.0.
+
+- The repository moved to [github.com/forktex/forktex-grid](https://github.com/forktex/forktex-grid); the package's links and the README point there.
+
 ## [1.0.0] — 2026-11-18
 
 First stable release. Requires Python 3.14, PostgreSQL 14+, `forktex>=1.2,<2`, SQLAlchemy 2.1.6, asyncpg 0.32 and pydantic 2.14 or newer.

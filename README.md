@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alexandru-dochian/forktex_grid/master/docs/assets/grid-banner.png" alt="forktex-grid" height="120">
+  <img src="https://raw.githubusercontent.com/forktex/forktex-grid/master/docs/assets/grid-banner.png" alt="forktex-grid" height="120">
 </p>
 
 <p align="center">
   <a href="https://pypi.org/project/forktex-grid/"><img src="https://img.shields.io/pypi/v/forktex-grid.svg" alt="PyPI"></a>
   <a href="https://pypi.org/project/forktex-grid/"><img src="https://img.shields.io/pypi/pyversions/forktex-grid.svg" alt="Python"></a>
-  <a href="https://github.com/alexandru-dochian/forktex_grid/blob/master/LICENSE"><img src="https://img.shields.io/pypi/l/forktex-grid.svg" alt="License"></a>
+  <a href="https://github.com/forktex/forktex-grid/blob/master/LICENSE"><img src="https://img.shields.io/pypi/l/forktex-grid.svg" alt="License"></a>
 </p>
 
 <p align="center"><em>Tables, columns and rows declared at runtime, stored in PostgreSQL.</em></p>
@@ -49,17 +49,17 @@ page = await invoices.query(Query(where=col("total") >= 100))
 
 | You want to | Read |
 |---|---|
-| Run a first table in one file | [Your first table](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#your-first-table) |
-| Serve tables from a FastAPI app, one namespace per tenant | [Run inside a web app](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#run-inside-a-web-app) |
-| Let each tenant add its own fields to your clients, orders, … | [Add tenant fields](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#add-tenant-fields-to-a-table-you-already-own) |
-| Filter, follow links, embed linked rows, page and count | [Ask questions](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#ask-questions-filters-links-embeds-pages) and [the query language](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/query.md) |
-| Validate a form with a table's own pydantic model | [Read values as Python](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#read-values-as-python-and-validate-forms) |
-| Add, drop or rename columns | [Change a schema](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#change-a-schema) |
-| Link rows, and decide what archiving one does to the others | [Link rows](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#link-rows) |
-| Install a template with its seed rows, all or nothing | [Write a schema and its rows in one transaction](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#write-a-schema-and-its-rows-in-one-transaction) |
-| Store a value grid has no type for | [Add your own field type](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#add-your-own-field-type) |
-| Let an LLM agent design, fill and query its own tables | [Give an agent its own tables](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#give-an-agent-its-own-tables), and [a whole assistant](https://github.com/alexandru-dochian/forktex_grid/blob/master/examples/assistant.py) |
-| Change a shape `apply` cannot change in place | [Reshape a namespace](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md#reshape-a-namespace) |
+| Run a first table in one file | [Your first table](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#your-first-table) |
+| Serve tables from a FastAPI app, one namespace per tenant | [Run inside a web app](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#run-inside-a-web-app) |
+| Let each tenant add its own fields to your clients, orders, … | [Add tenant fields](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#add-tenant-fields-to-a-table-you-already-own) |
+| Filter, follow links, embed linked rows, page and count | [Ask questions](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#ask-questions-filters-links-embeds-pages) and [the query language](https://github.com/forktex/forktex-grid/blob/master/docs/query.md) |
+| Validate a form with a table's own pydantic model | [Read values as Python](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#read-values-as-python-and-validate-forms) |
+| Add, drop or rename columns | [Change a schema](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#change-a-schema) |
+| Link rows, and decide what archiving one does to the others | [Link rows](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#link-rows) |
+| Install a template with its seed rows, all or nothing | [Write a schema and its rows in one transaction](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#write-a-schema-and-its-rows-in-one-transaction) |
+| Store a value grid has no type for | [Add your own field type](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#add-your-own-field-type) |
+| Let an LLM agent design, fill and query its own tables | [Give an agent its own tables](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#give-an-agent-its-own-tables), and [a whole assistant](https://github.com/forktex/forktex-grid/blob/master/examples/assistant.py) |
+| Change a shape `apply` cannot change in place | [Reshape a namespace](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md#reshape-a-namespace) |
 
 ## How it works
 
@@ -72,7 +72,7 @@ page = await invoices.query(Query(where=col("total") >= 100))
 | **Link** | A `ref` column holding another row's id, checked on write, with what archiving the target does: refuse, cascade or clear. |
 | **Query** | Filters, links, embeds, sorting, pages and counts — one document, written as JSON by an agent or with `col()` in code. |
 
-The ideas in ten minutes: [concepts](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/concepts.md).
+The ideas in ten minutes: [concepts](https://github.com/forktex/forktex-grid/blob/master/docs/concepts.md).
 
 ## Things to know
 
@@ -88,25 +88,25 @@ The ideas in ten minutes: [concepts](https://github.com/alexandru-dochian/forkte
 
 | Page | For |
 |---|---|
-| [Concepts](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/concepts.md) | How grid thinks, in ten minutes |
-| [Guide](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/guide.md) | Runnable examples for each way to use it |
-| [Query language](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/query.md) | Every filter, link match, embed, page and count |
-| [Reference](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/reference.md) | Every public name, option and error |
-| [Operating](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/operating.md) | Schema changes on a live database, performance, limits, failures |
+| [Concepts](https://github.com/forktex/forktex-grid/blob/master/docs/concepts.md) | How grid thinks, in ten minutes |
+| [Guide](https://github.com/forktex/forktex-grid/blob/master/docs/guide.md) | Runnable examples for each way to use it |
+| [Query language](https://github.com/forktex/forktex-grid/blob/master/docs/query.md) | Every filter, link match, embed, page and count |
+| [Reference](https://github.com/forktex/forktex-grid/blob/master/docs/reference.md) | Every public name, option and error |
+| [Operating](https://github.com/forktex/forktex-grid/blob/master/docs/operating.md) | Schema changes on a live database, performance, limits, failures |
 
 ## Stability
 
 From 1.0.0, semantic versioning covers every name in `forktex_grid.__all__`,
 the schema and query documents, the agent tool names and the `forktex_grid`
 database schema. Anything else is internal. Changes are listed in the
-[CHANGELOG](https://github.com/alexandru-dochian/forktex_grid/blob/master/CHANGELOG.md).
+[CHANGELOG](https://github.com/forktex/forktex-grid/blob/master/CHANGELOG.md).
 
 ## Contributing
 
 Working on `forktex-grid` itself? Start with
-[`docs/development.md`](https://github.com/alexandru-dochian/forktex_grid/blob/master/docs/development.md).
+[`docs/development.md`](https://github.com/forktex/forktex-grid/blob/master/docs/development.md).
 
 ## Licence
 
 AGPL-3.0-or-later, or a commercial licence from FORKTEX S.R.L.
-(info@forktex.com). See [LICENSE](https://github.com/alexandru-dochian/forktex_grid/blob/master/LICENSE) and [NOTICE](https://github.com/alexandru-dochian/forktex_grid/blob/master/NOTICE).
+(info@forktex.com). See [LICENSE](https://github.com/forktex/forktex-grid/blob/master/LICENSE) and [NOTICE](https://github.com/forktex/forktex-grid/blob/master/NOTICE).

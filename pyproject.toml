@@ -58,10 +58,10 @@ dependencies = [
 
 [project.urls]
 "Homepage" = "https://forktex.com"
-"Repository" = "https://github.com/alexandru-dochian/forktex_grid"
-"Documentation" = "https://github.com/alexandru-dochian/forktex_grid/tree/master/docs"
-"Changelog" = "https://github.com/alexandru-dochian/forktex_grid/blob/master/CHANGELOG.md"
-"Bug Tracker" = "https://github.com/alexandru-dochian/forktex_grid/issues"
+"Repository" = "https://github.com/forktex/forktex-grid"
+"Documentation" = "https://github.com/forktex/forktex-grid/tree/master/docs"
+"Changelog" = "https://github.com/forktex/forktex-grid/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/forktex/forktex-grid/issues"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

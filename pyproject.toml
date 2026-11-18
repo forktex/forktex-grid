@@ -1,0 +1,153 @@
+# Copyright (C) 2026 FORKTEX S.R.L.
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-ForkTex-Commercial
+#
+# This file is part of ForkTex Grid.
+#
+# For commercial licensing -- including use in proprietary products, SaaS
+# deployments, or any context where AGPL obligations cannot be met -- you
+# MUST obtain a commercial license from FORKTEX S.R.L. (info@forktex.com).
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+[project]
+name = "forktex-grid"
+version = "1.0.0"
+description = "Tables, columns and rows declared at runtime, stored in PostgreSQL, on the forktex substrate."
+authors = [
+    {name = "FORKTEX",email = "info@forktex.com"}
+]
+readme = "README.md"
+# Dual-licensed: AGPL-3.0-or-later for OSS use; a proprietary commercial
+# license is also available (see LICENSE + NOTICE; info@forktex.com).
+license = "AGPL-3.0-or-later OR LicenseRef-ForkTex-Commercial"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.14,<4.0"
+# 5 - Production/Stable: 1.0.0 is the stable surface (README.md#stability).
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Database",
+    "Topic :: Database :: Database Engines/Servers",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+]
+# No extras: every dependency is required by the shipped surface.
+dependencies = [
+    "forktex>=1.2,<2",
+    "sqlalchemy[asyncio]>=2.1.6",
+    "asyncpg>=0.32",
+    "pydantic>=2.14",
+]
+
+
+[project.urls]
+"Homepage" = "https://forktex.com"
+"Repository" = "https://github.com/alexandru-dochian/forktex_grid"
+"Documentation" = "https://github.com/alexandru-dochian/forktex_grid/tree/master/docs"
+"Changelog" = "https://github.com/alexandru-dochian/forktex_grid/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/alexandru-dochian/forktex_grid/issues"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [{ include = "forktex_grid", from = "src" }]
+include = [
+    { path = "src/forktex_grid/py.typed", format = ["sdist", "wheel"] },
+    # Without the .sql files in the wheel, apply_migrations creates no tables.
+    { path = "src/forktex_grid/persist/migrations/*.sql", format = ["sdist", "wheel"] },
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "pytest-asyncio>=1.4",
+    "pytest-cov>=7.1",
+    "ruff>=0.17.3",
+    "pyright>=1.1.414",
+    "pip-audit>=2.10.1",
+    "build>=1.6.1",
+    "twine>=7.0",
+    "testcontainers[postgres]>=4.15",
+    "import-linter (>=2.1)",
+    "hypothesis (>=6.140)",
+]
+
+[tool.ruff]
+# Matches requires-python: older targets misread PEP 758 and PEP 695 syntax.
+target-version = "py314"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "RUF", "ANN"]
+
+[tool.ruff.lint.per-file-ignores]
+# `src/` has no exemptions; tests and battle scenarios hold the baseline only.
+"tests/**" = ["E1", "E2", "E5", "I", "UP", "B", "SIM", "RUF", "ANN"]
+"battle/**" = ["E1", "E2", "E5", "I", "UP", "B", "SIM", "RUF", "ANN"]
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/__pycache__"]
+pythonVersion = "3.14"
+typeCheckingMode = "basic"
+
+[tool.coverage.report]
+# The floor compares the figure to two decimals; at 0, a rounded figure passes a floor it misses.
+precision = 2
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+norecursedirs = [".venv", "dist", "build", ".hypothesis"]
+log_cli = false
+log_level = "WARNING"
+filterwarnings = [
+    # Third-party deprecations are noise here; this package's own stay visible.
+    "ignore::DeprecationWarning",
+    "default::DeprecationWarning:forktex_grid",
+    "ignore::pytest.PytestUnraisableExceptionWarning",
+]
+
+[tool.importlinter]
+root_package = "forktex_grid"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Layers import one way: domain, persist, read, write, then the facade, then the agent tools"
+type = "layers"
+containers = ["forktex_grid"]
+layers = [
+    "agent",
+    "namespace",
+    "table",
+    "write",
+    "read",
+    "persist",
+    "domain",
+    "errors",
+]
+
+[[tool.importlinter.contracts]]
+name = "The domain does no I/O"
+type = "forbidden"
+source_modules = ["forktex_grid.domain"]
+forbidden_modules = ["sqlalchemy", "asyncpg"]
+allow_indirect_imports = true

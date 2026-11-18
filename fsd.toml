@@ -1,0 +1,67 @@
+# Copyright (C) 2026 FORKTEX S.R.L.
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later OR LicenseRef-ForkTex-Commercial
+#
+# This file is part of ForkTex Grid.
+#
+# For commercial licensing -- including use in proprietary products, SaaS
+# deployments, or any context where AGPL obligations cannot be met -- you
+# MUST obtain a commercial license from FORKTEX S.R.L. (info@forktex.com).
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+# This repository, bound to FSD (pipx install forktex-fsd). This file is the only
+# place its commands live: `fsd assurance`, `fsd security` and `fsd documentation`
+# are the gate, and `fsd build` makes the artifact. Tests need Docker.
+standard = "1.0"
+profile = "library"
+
+[operation]
+setup = ["poetry install --with dev", 'poetry run python -m pip install -q --upgrade "pip>=26.1.2"']
+clean = "poetry run python scripts/clean.py"
+# custom: rewrite the source into shape — under operation, so it never runs with a checks track
+tidy = [
+    "poetry run ruff format src tests battle examples scripts",
+    "poetry run ruff check --fix src tests battle examples scripts",
+    "poetry run python scripts/license_headers.py fix",
+]
+
+[assurance]
+format = "poetry run ruff format --check src tests battle examples scripts"
+lint = ["poetry run ruff check src tests battle examples scripts", "poetry run lint-imports"]
+validate = ["poetry run python scripts/check_parse.py", "poetry run pyright src"]
+# the floor is the measured figure, floored: raise it with real coverage, never lower it
+test = { run = "poetry run pytest tests -q --cov=src/forktex_grid --cov-report=term-missing --cov-report=xml:build/coverage.xml --junitxml=build/junit.xml --cov-fail-under=98", results = ["build/junit.xml", "build/coverage.xml"] }
+license = "poetry run python scripts/license_headers.py check"
+
+[security]
+audit = ["poetry check --lock", "poetry run pip-audit --skip-editable --timeout 30"]
+
+[delivery]
+build = [
+    "poetry run python scripts/clean.py dist",
+    "poetry run python -m build",
+    "poetry run twine check dist/*",
+    "poetry run python scripts/smoke.py",
+]
+publish = ["poetry run python scripts/release_check.py", "poetry run twine upload dist/*"]
+# custom: tag the release commit v<version> and push the tag, once every other release check passes
+tag = "poetry run python scripts/release_check.py tag"
+# custom: the same upload to TestPyPI, as a rehearsal
+rehearse = ["poetry run python scripts/release_check.py", "poetry run twine upload -r testpypi dist/*"]
+# custom: every consumer scenario against the built wheel, on the oldest and newest supported Postgres — before a release
+battle = ["poetry run python battle/run.py --postgres 14", "poetry run python battle/run.py --postgres 17"]
+
+[documentation]
+manual = { file = ["README.md", "AGENTS.md", "docs/concepts.md", "docs/development.md", "docs/guide.md", "docs/operating.md", "docs/query.md", "docs/reference.md"] }
